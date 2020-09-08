@@ -43,6 +43,7 @@ let
           [ "-DCMAKE_BUILD_TYPE=Release"
             (lib.optionalString officialRelease "-DFDB_RELEASE=TRUE")
 
+            # FIXME: why can't openssl be found automatically?
             "-DOPENSSL_USE_STATIC_LIBS=FALSE"
             "-DOPENSSL_INCLUDE_DIR=${openssl.dev}"
             "-DOPENSSL_CRYPTO_LIBRARY=${openssl.out}/lib/libcrypto.so"
@@ -71,9 +72,9 @@ let
         # fix up the use of the very weird and custom 'fdb_install' command by just
         # replacing it with cmake's ordinary version.
         postPatch = ''
-#          for x in bindings/c/CMakeLists.txt fdbserver/CMakeLists.txt fdbmonitor/CMakeLists.txt fdbbackup/CMakeLists.txt fdbcli/CMakeLists.txt; do 
-#            substituteInPlace $x --replace 'fdb_install' 'install'
-#          done
+        for x in bindings/c/CMakeLists.txt fdbserver/CMakeLists.txt fdbmonitor/CMakeLists.txt fdbbackup/CMakeLists.txt fdbcli/CMakeLists.txt; do 
+            substituteInPlace $x --replace 'fdb_install' 'install'
+        done
         substituteInPlace CMakeLists.txt --replace 'message(SEND_ERROR "The project version in cmake is set to' 'message(STATUS "The project version in cmake is set to'
         substituteInPlace CMakeLists.txt --replace 'message(SEND_ERROR "The package name in cmake is set to' 'message(STATUS "The package name in cmake is set to'
         '';

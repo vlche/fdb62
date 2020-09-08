@@ -33,12 +33,14 @@ in with builtins; {
   # ------------------------------------------------------
 
   foundationdb62 = cmakeBuild {
-    version = "6.2.24";
+    version = "6.2.25";
     branch  = "release-6.2";
-    sha256  = "1hy5samlmbjwif5wrj433spn2ifaprj1cnisk26910yv0by7jk0n";
+# nix-prefetch-url --unpack --type sha256 https://github.com/apple/foundationdb/archive/6.2.25.tar.gz
+    sha256  = "01p8q0kpcnki65hlk5sav2isjlskqrwq5281maghhk9fzsc1cx26";
 
     patches = [
       #./patches/clang-libcxx.patch
+      ./patches/CMakeLists.patch
       ./patches/suppress-clang-warnings.patch
       glibc230-fix
     ];
